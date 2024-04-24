@@ -3,15 +3,13 @@ import pickle
 import pandas as pd
 import requests
 
-
 # Function to fetch movie poster URL
 def fetch_poster(movie_id):
     response = requests.get(
-        'https://api.themoviedb.org/3/movie/{}?api_key=db3c9938a2d67356e00f343588d57d32&language=en-US'.format(
-            movie_id))
+        f'https://api.themoviedb.org/3/movie/{movie_id}?api_key=db3c9938a2d67356e00f343588d57d32&language=en-US'
+    )
     data = response.json()
     return "https://image.tmdb.org/t/p/w500" + data['poster_path']
-
 
 # Function to recommend movies
 def recommend(movie):
@@ -48,7 +46,6 @@ def recommend(movie):
         st.error(f"An error occurred: {e}")
         return [], []
 
-
 # Load movies data and similarity matrix
 movies_dict = pickle.load(open('movies_dictionary.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
@@ -60,14 +57,14 @@ except (IOError, OSError, pickle.UnpicklingError) as e:
     print(f"Error loading similarity data: {e}")
     similarity = None
 
-
 # Streamlit app title
 st.title('Movie Recommender System')
 
 # Dropdown to select a movie
 selected_movie_name = st.selectbox(
     "Select a Movie",
-    movies['title'].values)
+    movies['title'].values
+)
 
 # Button to trigger movie recommendation
 if st.button('Recommend'):
